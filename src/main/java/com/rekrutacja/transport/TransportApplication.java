@@ -4,7 +4,7 @@ import com.rekrutacja.transport.dao.DeliveryRepository;
 import com.rekrutacja.transport.dao.GarageRepository;
 import com.rekrutacja.transport.dao.TruckRepository;
 import com.rekrutacja.transport.model.Delivery;
-import com.rekrutacja.transport.model.DeliveryStatus;
+import com.rekrutacja.transport.model.enums.DeliveryStatus;
 import com.rekrutacja.transport.model.Garage;
 import com.rekrutacja.transport.model.Truck;
 import jakarta.transaction.Transactional;

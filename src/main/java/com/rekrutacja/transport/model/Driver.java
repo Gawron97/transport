@@ -1,5 +1,6 @@
 package com.rekrutacja.transport.model;
 
+import com.rekrutacja.transport.model.enums.Status;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

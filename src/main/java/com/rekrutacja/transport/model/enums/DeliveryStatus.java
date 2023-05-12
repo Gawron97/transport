@@ -1,4 +1,4 @@
-package com.rekrutacja.transport.model;
+package com.rekrutacja.transport.model.enums;
 
 public enum DeliveryStatus {
 

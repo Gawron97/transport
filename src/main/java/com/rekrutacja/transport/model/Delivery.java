@@ -1,7 +1,6 @@
 package com.rekrutacja.transport.model;
 
 import jakarta.persistence.*;
-import jakarta.servlet.annotation.HttpConstraint;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -27,5 +26,28 @@ public class Delivery {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Truck truck;
+
+    @Enumerated(value = EnumType.STRING)
+    private DeliveryStatus status;
+
+    public void addTruck(Truck truck) {
+        this.truck = truck;
+        truck.getDeliveries().add(this);
+    }
+
+    public void addDriver(Driver driver) {
+        this.driver = driver;
+        driver.getDeliveries().add(this);
+    }
+
+    public void removeTruck(Truck truck) {
+        this.truck = null;
+        truck.getDeliveries().remove(this);
+    }
+
+    public void removeDriver(Driver driver) {
+        this.driver = null;
+        driver.getDeliveries().remove(this);
+    }
 
 }

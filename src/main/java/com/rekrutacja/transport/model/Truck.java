@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -26,5 +27,12 @@ public class Truck {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "truck")
     private List<Delivery> deliveries;
+
+    @Enumerated(value = EnumType.STRING)
+    private Status status;
+
+    public Truck() {
+        deliveries = new ArrayList<>();
+    }
 
 }

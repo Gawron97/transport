@@ -2,6 +2,8 @@ package com.rekrutacja.transport.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -17,7 +19,15 @@ public class Driver {
     private double salary;
     private int age;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "idGarage")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private Garage garage;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "driver")
     private List<Delivery> deliveries;
 
+    @Enumerated(value = EnumType.STRING)
+    private Status status;
 }

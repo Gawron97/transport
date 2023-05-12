@@ -31,24 +31,15 @@ public class Delivery {
     @Enumerated(value = EnumType.STRING)
     private DeliveryStatus status;
 
-    public void addTruck(Truck truck) {
-        this.truck = truck;
-        truck.getDeliveries().add(this);
-    }
 
     public void addDriver(Driver driver) {
         this.driver = driver;
         driver.getDeliveries().add(this);
     }
 
-    public void removeTruck(Truck truck) {
-        this.truck = null;
-        truck.getDeliveries().remove(this);
-    }
-
     public void removeDriver(Driver driver) {
-        this.driver = null;
         driver.getDeliveries().remove(this);
+        this.driver = null;
     }
 
 }

@@ -7,6 +7,7 @@ import com.rekrutacja.transport.model.Delivery;
 import com.rekrutacja.transport.model.enums.DeliveryStatus;
 import com.rekrutacja.transport.model.Garage;
 import com.rekrutacja.transport.model.Truck;
+import com.rekrutacja.transport.service.TruckService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -22,6 +23,8 @@ public class TransportApplication implements CommandLineRunner {
 	GarageRepository garageRepository;
 	@Autowired
 	TruckRepository truckRepository;
+	@Autowired
+	TruckService truckService;
 
 
 	public static void main(String[] args) {
@@ -32,30 +35,39 @@ public class TransportApplication implements CommandLineRunner {
 	@Transactional
 	public void run(String... args) throws Exception {
 
-		Garage garage = new Garage();
-		garage.setName("test");
+//		Delivery delivery = new Delivery();
+//		delivery.setStatus(DeliveryStatus.ON_THE_WAY);
+//		delivery.setItemName("cos");
+//		Truck truck = truckRepository.findById(1L).get();
+//		truck.addDelivery(delivery);
+//		deliveryRepository.save(delivery);
+//		System.out.println(truckRepository.findById(1L).get().getDeliveries());
 
-		Truck truck = new Truck();
-		truck.setGarage(garage);
-		garage.getTrucks().add(truck);
+//		truckService.deleteTruck(1L);
 
-		garageRepository.save(garage);
-		truckRepository.save(truck);
-
-		Delivery delivery = new Delivery();
-		delivery.setTruck(truck);
-		delivery.setItemName("cos");
-		delivery.setStatus(DeliveryStatus.ON_THE_WAY);
-
-		deliveryRepository.save(delivery);
-
-		deliveryRepository.save(delivery);
-
-		Truck truck1 = truckRepository.getById(1L);
-		truck1.getDeliveries().add(delivery);
-
-		truckRepository.save(truck1);
-
-		System.out.println(truckRepository.getById(1L).getDeliveries());
+//		Garage garage = new Garage();
+//		garage.setName("test");
+//
+//		Truck truck = new Truck();
+//		truck.setGarage(garage);
+//		garage.getTrucks().add(truck);
+//
+//		garageRepository.save(garage);
+//		truckRepository.save(truck);
+//
+//		Delivery delivery = new Delivery();
+//		delivery.setTruck(truck);
+//		delivery.setItemName("cos");
+//		delivery.setStatus(DeliveryStatus.ON_THE_WAY);
+//
+//		deliveryRepository.save(delivery);
+//
+//		deliveryRepository.save(delivery);
+//
+//		Truck truck1 = truckRepository.getById(1L);
+//
+//		truckRepository.save(truck1);
+//
+//		System.out.println(truckRepository.findById(1L).get().getDeliveries());
 	}
 }

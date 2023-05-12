@@ -1,5 +1,6 @@
 package com.rekrutacja.transport.model;
 
+import com.rekrutacja.transport.DTO.TruckDTO;
 import com.rekrutacja.transport.model.enums.Status;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -34,6 +35,30 @@ public class Truck {
 
     public Truck() {
         deliveries = new ArrayList<>();
+    }
+
+    public void addDelivery(Delivery delivery) {
+        deliveries.add(delivery);
+        delivery.setTruck(this);
+    }
+
+    public void removeDelivery(Delivery delivery) {
+        deliveries.remove(delivery);
+        delivery.setTruck(null);
+    }
+
+    public void removeDeliveries() {
+        deliveries.forEach(delivery -> delivery.setTruck(null));
+        deliveries.clear();
+    }
+
+    public static Truck of(TruckDTO truckDTO) {
+        Truck truck = new Truck();
+        truck.setBrand(truckDTO.getBrand());
+        truck.setModel(truckDTO.getModel());
+        truck.setCapacity(truckDTO.getCapacity());
+        truck.setStatus(truckDTO.getStatus());
+        return truck;
     }
 
 }

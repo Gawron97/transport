@@ -1,6 +1,7 @@
 package com.rekrutacja.transport.controller;
 
 import com.rekrutacja.transport.dao.DriverRepository;
+import com.rekrutacja.transport.service.DeliveryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -8,6 +9,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class DriverController {
 
-    private final DriverRepository driverRepository;
+    private final DeliveryService deliveryService;
 
 }

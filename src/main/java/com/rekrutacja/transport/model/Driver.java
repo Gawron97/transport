@@ -31,4 +31,5 @@ public class Driver {
 
     @Enumerated(value = EnumType.STRING)
     private Status status;
+
 }

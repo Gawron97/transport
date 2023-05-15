@@ -2,12 +2,19 @@ package com.rekrutacja.transport.service;
 
 
 import com.rekrutacja.transport.DTO.TruckDTO;
+import com.rekrutacja.transport.dao.GarageRepository;
 import com.rekrutacja.transport.dao.TruckRepository;
 import com.rekrutacja.transport.model.Delivery;
+import com.rekrutacja.transport.model.Garage;
 import com.rekrutacja.transport.model.Truck;
+import com.rekrutacja.transport.utils.garage.exceptions.GarageError;
+import com.rekrutacja.transport.utils.garage.exceptions.GarageNotFoundException;
+import com.rekrutacja.transport.utils.trucks.exceptions.TruckError;
+import com.rekrutacja.transport.utils.trucks.exceptions.TruckNeedGarageException;
 import com.rekrutacja.transport.utils.trucks.exceptions.TruckNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -18,32 +25,37 @@ import java.util.List;
 public class TruckService {
 
     private final TruckRepository truckRepository;
+    private final GarageRepository garageRepository;
 
     public void addOrUpdateTruck(TruckDTO truckDTO) {
+
+        Garage garage = garageRepository.findById(truckDTO.getIdGarage()).orElseThrow(() ->
+                new GarageNotFoundException(GarageError.GARAGE_NOT_FOUND, HttpStatus.NOT_FOUND));
+
         if(truckDTO.getIdTruck() != null) {
-            updateTruck(truckDTO);
+            updateTruck(truckDTO, garage);
         } else {
-            addTruck(truckDTO);
+            addTruck(truckDTO, garage);
         }
     }
 
-
-    private void addTruck(TruckDTO truckDTO) {
+    private void addTruck(TruckDTO truckDTO, Garage garage) {
         Truck truck = Truck.of(truckDTO);
+        truck.setGarage(garage);
         truckRepository.save(truck);
     }
 
-    private void updateTruck(TruckDTO truckDTO) {
+    private void updateTruck(TruckDTO truckDTO, Garage garage) {
 
         Truck truck = getTruck(truckDTO.getIdTruck());
+        truck.setGarage(garage);
         truckRepository.save(truck);
 
     }
 
     private Truck getTruck(Long idTruck) {
-        return truckRepository.findById(idTruck).orElseThrow(() -> {
-            throw new TruckNotFoundException();
-        });
+        return truckRepository.findById(idTruck).orElseThrow(() ->
+                new TruckNotFoundException(TruckError.TRUCK_NOT_FOUND, HttpStatus.NOT_FOUND));
     }
 
     public ResponseEntity<TruckDTO> getTruckById(Long idTruck) {
@@ -54,7 +66,11 @@ public class TruckService {
     @Transactional
     public void deleteTruck(Long idTruck) {
         Truck truck = getTruck(idTruck);
-        truck.removeDeliveries();
+        truck.getDeliveries().forEach(delivery -> {
+            if(truck.equals(delivery.getTruck())) {
+                delivery.setTruck(null);
+            }
+        });
 
         truckRepository.delete(truck);
     }

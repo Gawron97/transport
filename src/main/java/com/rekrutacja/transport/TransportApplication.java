@@ -35,13 +35,28 @@ public class TransportApplication implements CommandLineRunner {
 	@Transactional
 	public void run(String... args) throws Exception {
 
+//		Garage garage = new Garage();
+//		garage.setName("asd");
+//		garageRepository.save(garage);
+//
+//		Truck truck = new Truck();
+//		truck.setModel("cos");
+//		truck.setGarage(garage);
+//		truckRepository.save(truck);
+
+//		truckService.deleteTruck(1L);
+
+//		Truck truck2 = new Truck();
+//		truck2.setModel("ssss");
+//		truckRepository.save(truck2);
+//
 //		Delivery delivery = new Delivery();
 //		delivery.setStatus(DeliveryStatus.ON_THE_WAY);
 //		delivery.setItemName("cos");
 //		Truck truck = truckRepository.findById(1L).get();
-//		truck.addDelivery(delivery);
+//		delivery.setTruck(truck);
 //		deliveryRepository.save(delivery);
-//		System.out.println(truckRepository.findById(1L).get().getDeliveries());
+//		System.out.println(delivery.getTruck());
 
 //		truckService.deleteTruck(1L);
 

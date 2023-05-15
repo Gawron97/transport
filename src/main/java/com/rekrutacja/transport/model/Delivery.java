@@ -31,15 +31,4 @@ public class Delivery {
     @Enumerated(value = EnumType.STRING)
     private DeliveryStatus status;
 
-
-    public void addDriver(Driver driver) {
-        this.driver = driver;
-        driver.getDeliveries().add(this);
-    }
-
-    public void removeDriver(Driver driver) {
-        driver.getDeliveries().remove(this);
-        this.driver = null;
-    }
-
 }

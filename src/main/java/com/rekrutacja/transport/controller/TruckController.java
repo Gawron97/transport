@@ -2,8 +2,10 @@ package com.rekrutacja.transport.controller;
 
 import com.rekrutacja.transport.DTO.TruckDTO;
 import com.rekrutacja.transport.service.TruckService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,7 +18,7 @@ public class TruckController {
     private final TruckService truckService;
 
     @PostMapping()
-    public void addTruck(@RequestBody TruckDTO truckDTO) {
+    public void addTruck(@RequestBody @Valid TruckDTO truckDTO) {
         truckService.addOrUpdateTruck(truckDTO);
     }
 

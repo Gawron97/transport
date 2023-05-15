@@ -16,7 +16,7 @@ public class TruckController {
 
     private final TruckService truckService;
 
-    @PostMapping()
+    @PostMapping
     public void addOrUpdateTruck(@RequestBody @Valid TruckDTO truckDTO) {
         truckService.addOrUpdateTruck(truckDTO);
     }
@@ -24,6 +24,11 @@ public class TruckController {
     @GetMapping("/{idTruck}")
     public ResponseEntity<TruckDTO> getTruck(@PathVariable Long idTruck) {
         return truckService.getTruck(idTruck);
+    }
+
+    @PatchMapping("/{idTruck}")
+    public void patchTruck(@PathVariable Long idTruck, @RequestBody @Valid TruckDTO truckDTO) {
+        truckService.patchTruck(idTruck, truckDTO);
     }
 
     @DeleteMapping("/{idTruck}")

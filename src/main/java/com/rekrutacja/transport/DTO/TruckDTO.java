@@ -28,6 +28,7 @@ public class TruckDTO {
                 .model(truck.getModel())
                 .capacity(truck.getCapacity())
                 .status(truck.getStatus())
+                .idGarage(truck.getGarage().getIdGarage())
                 .build();
     }
 

@@ -1,12 +1,11 @@
 package com.rekrutacja.transport.controller;
 
 import com.rekrutacja.transport.DTO.GarageDTO;
+import com.rekrutacja.transport.DTO.GarageWithAssociationsDTO;
 import com.rekrutacja.transport.service.GarageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.lang.module.ResolutionException;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,6 +22,11 @@ public class GarageController {
     @GetMapping("/{idGarage}")
     public ResponseEntity<GarageDTO> getGarage(@PathVariable Long idGarage) {
         return garageService.getGarage(idGarage);
+    }
+
+    @GetMapping("with_details/{idGarage}")
+    public ResponseEntity<GarageWithAssociationsDTO> getGarageWithTrucks(@PathVariable Long idGarage) {
+        return garageService.getGarageWithTrucks(idGarage);
     }
 
     @DeleteMapping("/{idGarage}")

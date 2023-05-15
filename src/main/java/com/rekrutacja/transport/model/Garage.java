@@ -36,7 +36,7 @@ public class Garage {
 
     public static Garage of(GarageDTO garageDTO) {
         Garage garage = new Garage();
-        garage.setName(garage.getName());
+        garage.setName(garageDTO.getName());
         return garage;
     }
 }

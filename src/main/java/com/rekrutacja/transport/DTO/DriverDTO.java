@@ -1,12 +1,14 @@
 package com.rekrutacja.transport.DTO;
 
 import com.rekrutacja.transport.model.Driver;
+import com.rekrutacja.transport.model.enums.Status;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
+import lombok.experimental.SuperBuilder;
 
 @Data
-@Builder
+@SuperBuilder
 public class DriverDTO {
 
     private Long idDriver;
@@ -14,6 +16,7 @@ public class DriverDTO {
     private String surname;
     private double salary;
     private int age;
+    private Status status;
     @NotNull
     private Long idGarage;
 
@@ -24,6 +27,8 @@ public class DriverDTO {
                 .surname(driver.getSurname())
                 .salary(driver.getSalary())
                 .age(driver.getAge())
+                .status(driver.getStatus())
+                .idGarage(driver.getGarage().getIdGarage())
                 .build();
     }
 

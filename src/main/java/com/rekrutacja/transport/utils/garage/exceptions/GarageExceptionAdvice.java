@@ -14,4 +14,14 @@ public class GarageExceptionAdvice {
         return ResponseEntity.status(ex.getStatus()).body(new ErrorInfo(ex.getGarageError().getMessage()));
     }
 
+    @ExceptionHandler(CannotDeleteGarageWithTrucksException.class)
+    public ResponseEntity<ErrorInfo> handleGarageNotFoundException(CannotDeleteGarageWithTrucksException ex) {
+        return ResponseEntity.status(ex.getStatus()).body(new ErrorInfo(ex.getGarageError().getMessage()));
+    }
+
+    @ExceptionHandler(CannotDeleteGarageWithDriversException.class)
+    public ResponseEntity<ErrorInfo> handleGarageNotFoundException(CannotDeleteGarageWithDriversException ex) {
+        return ResponseEntity.status(ex.getStatus()).body(new ErrorInfo(ex.getGarageError().getMessage()));
+    }
+
 }

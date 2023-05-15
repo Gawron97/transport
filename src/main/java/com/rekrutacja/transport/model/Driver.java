@@ -21,6 +21,9 @@ public class Driver {
     private double salary;
     private int age;
 
+    @Enumerated(value = EnumType.STRING)
+    private Status status;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idGarage")
     @ToString.Exclude
@@ -30,15 +33,13 @@ public class Driver {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "driver")
     private List<Delivery> deliveries;
 
-    @Enumerated(value = EnumType.STRING)
-    private Status status;
-
     public static Driver of(DriverDTO driverDTO) {
         Driver driver = new Driver();
         driver.setName(driverDTO.getName());
         driver.setSurname(driverDTO.getSurname());
         driver.setSalary(driverDTO.getSalary());
         driver.setAge(driverDTO.getAge());
+        driver.setStatus(driverDTO.getStatus());
         return driver;
     }
 

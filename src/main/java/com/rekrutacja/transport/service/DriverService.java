@@ -15,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
 @RequiredArgsConstructor
 public class DriverService {
@@ -25,7 +27,7 @@ public class DriverService {
     public void addOrUpdateDriver(DriverDTO driverDTO) {
 
         Garage garage = garageRepository.findById(driverDTO.getIdGarage()).orElseThrow(() ->
-                new DriverNeedGarageException(DriverError.DRIVER_HAVE_TO_HAS_GARAGE, HttpStatus.BAD_REQUEST));
+                new GarageNotFoundException(GarageError.GARAGE_NOT_FOUND, HttpStatus.NOT_FOUND));
 
         if(driverDTO.getIdDriver() != null) {
             updateDriver(driverDTO, garage);
@@ -73,5 +75,24 @@ public class DriverService {
         });
 
         driverRepository.delete(driver);
+    }
+
+    public void patchDriver(Long idDriver, DriverDTO driverDTO) {
+
+        Driver driver = getDriverById(idDriver);
+        if(Objects.nonNull(driverDTO.getSalary())) {
+            driver.setSalary(driverDTO.getSalary());
+        }
+        if(Objects.nonNull(driverDTO.getStatus())) {
+            driver.setStatus(driverDTO.getStatus());
+        }
+        if(Objects.nonNull(driverDTO.getIdGarage())) {
+            Garage garage = garageRepository.findById(driverDTO.getIdGarage()).orElseThrow(() ->
+                    new GarageNotFoundException(GarageError.GARAGE_NOT_FOUND, HttpStatus.NOT_FOUND));
+            driver.setGarage(garage);
+        }
+
+        driverRepository.save(driver);
+
     }
 }

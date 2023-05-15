@@ -24,6 +24,11 @@ public class DeliveryController {
         return deliveryService.getDelivery(idDelivery);
     }
 
+    @PatchMapping("/{idDelivery}")
+    public void patchDelivery(@PathVariable Long idDelivery, @RequestBody DeliveryDTO deliveryDTO) {
+        deliveryService.patchDelivery(idDelivery, deliveryDTO);
+    }
+
     @DeleteMapping(value = "/{idDelivery}")
     public void deleteDelivery(@PathVariable Long idDelivery) {
         deliveryService.deleteDelivery(idDelivery);

@@ -1,8 +1,11 @@
 package com.rekrutacja.transport.service;
 
 import com.rekrutacja.transport.DTO.GarageDTO;
+import com.rekrutacja.transport.DTO.GarageWithAssociationsDTO;
 import com.rekrutacja.transport.dao.GarageRepository;
 import com.rekrutacja.transport.model.Garage;
+import com.rekrutacja.transport.utils.garage.exceptions.CannotDeleteGarageWithDriversException;
+import com.rekrutacja.transport.utils.garage.exceptions.CannotDeleteGarageWithTrucksException;
 import com.rekrutacja.transport.utils.garage.exceptions.GarageError;
 import com.rekrutacja.transport.utils.garage.exceptions.GarageNotFoundException;
 import jakarta.transaction.Transactional;
@@ -47,23 +50,25 @@ public class GarageService {
 
     }
 
-    @Transactional
     public void deleteGarage(Long idGarage) {
 
         Garage garage = getGarageById(idGarage);
-        garage.getTrucks().forEach(truck -> {
-            if(truck.getGarage().equals(garage)) {
-                truck.setGarage(null);
-            }
-        });
 
-        garage.getDrivers().forEach(driver -> {
-            if(driver.getGarage().equals(garage)) {
-                driver.setGarage(null);
-            }
-        });
+        if(garage.getTrucks().size() > 0) {
+            throw new CannotDeleteGarageWithTrucksException(GarageError.CANNOT_DELETE_GARAGE_WITH_TRUCKS_INSIDE, HttpStatus.CONFLICT);
+        }
+        if(garage.getDrivers().size() > 0) {
+            throw new CannotDeleteGarageWithDriversException(GarageError.CANNOT_DELETE_GARAGE_WITH_DRIVERS_INSIDE, HttpStatus.CONFLICT);
+        }
 
         garageRepository.delete(garage);
+
+    }
+
+    public ResponseEntity<GarageWithAssociationsDTO> getGarageWithTrucks(Long idGarage) {
+
+        Garage garage = getGarageById(idGarage);
+        return ResponseEntity.ok(GarageWithAssociationsDTO.of(garage));
 
     }
 }

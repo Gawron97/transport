@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
-@Service
+@RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "api/drivers")
 public class DriverController {
@@ -23,6 +23,11 @@ public class DriverController {
     @GetMapping("/{idDriver}")
     public ResponseEntity<DriverDTO> getDriver(@PathVariable Long idDriver) {
         return driverService.getDriver(idDriver);
+    }
+
+    @PatchMapping("/{idDriver}")
+    public void patchDriver(@PathVariable Long idDriver, @RequestBody @Valid DriverDTO driverDTO) {
+        driverService.patchDriver(idDriver, driverDTO);
     }
 
     @DeleteMapping(value = "/{idDriver}")

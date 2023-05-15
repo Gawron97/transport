@@ -25,6 +25,8 @@ public class DeliveryDTO {
                 .itemName(delivery.getItemName())
                 .weight(delivery.getWeight())
                 .deliveryStatus(delivery.getStatus())
+                .idTruck(delivery.getTruck().getIdTruck())
+                .idDriver(delivery.getDriver().getIdDriver())
                 .build();
     }
 

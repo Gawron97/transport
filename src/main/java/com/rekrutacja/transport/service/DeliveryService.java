@@ -7,12 +7,15 @@ import com.rekrutacja.transport.dao.TruckRepository;
 import com.rekrutacja.transport.model.Delivery;
 import com.rekrutacja.transport.model.Driver;
 import com.rekrutacja.transport.model.Truck;
+import com.rekrutacja.transport.model.enums.DeliveryStatus;
 import com.rekrutacja.transport.model.enums.Status;
 import com.rekrutacja.transport.utils.delivery.exceptions.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -29,17 +32,26 @@ public class DeliveryService {
         Driver driver = driverRepository.findById(deliveryDTO.getIdDriver()).orElseThrow(() ->
                 new DeliveryNeedDriverException(DeliveryError.DELIVERY_NEED_DRIVER, HttpStatus.BAD_REQUEST));
 
-        validateDriverAndTruck(driver, truck);
+        validate(deliveryDTO, driver, truck);
+
+        Delivery delivery;
 
         if(deliveryDTO.getIdDelivery() != null) {
-            updateDelivery(deliveryDTO, truck, driver);
+            delivery = getDeliveryById(deliveryDTO.getIdDelivery());
         } else {
-            addDelivery(deliveryDTO, truck, driver);
+            delivery = Delivery.of(deliveryDTO);
+            delivery.setStatus(DeliveryStatus.ON_THE_WAY);
         }
+
+        delivery.setDriver(driver);
+        delivery.setTruck(truck);
+        driver.setStatus(Status.NOT_AVAILABLE);
+        truck.setStatus(Status.NOT_AVAILABLE);
+        deliveryRepository.save(delivery);
 
     }
 
-    private void validateDriverAndTruck(Driver driver, Truck truck) {
+    private void validate(DeliveryDTO deliveryDTO, Driver driver, Truck truck) {
         if(Status.NOT_AVAILABLE.equals(driver.getStatus())) {
             throw new CannotAssignNotAvailableDriverException(DeliveryError.CANNOT_ASSIGN_NOT_AVAILABLE_DRIVER,
                     HttpStatus.BAD_REQUEST);
@@ -48,24 +60,9 @@ public class DeliveryService {
             throw new CannotAssignNotAvailableTruckException(DeliveryError.CANNOT_ASSIGN_NOT_AVAILABLE_TRUCK,
                     HttpStatus.BAD_REQUEST);
         }
-    }
-
-    private void updateDelivery(DeliveryDTO deliveryDTO, Truck truck, Driver driver) {
-
-        Delivery delivery = getDeliveryById(deliveryDTO.getIdDelivery());
-        delivery.setDriver(driver);
-        delivery.setTruck(truck);
-        deliveryRepository.save(delivery);
-
-    }
-
-    private void addDelivery(DeliveryDTO deliveryDTO, Truck truck, Driver driver) {
-
-        Delivery delivery = Delivery.of(deliveryDTO);
-        delivery.setDriver(driver);
-        delivery.setTruck(truck);
-        deliveryRepository.save(delivery);
-
+        if(truck.getCapacity() < deliveryDTO.getWeight()) {
+            throw new NotEnoughCapacityInTruckException(DeliveryError.NOT_ENOUGH_CAPACITY_IN_TRUCK,HttpStatus.BAD_REQUEST);
+        }
     }
 
     private Delivery getDeliveryById(Long idDelivery) {
@@ -82,6 +79,18 @@ public class DeliveryService {
 
         Delivery delivery = getDeliveryById(idDelivery);
         deliveryRepository.delete(delivery);
+
+    }
+
+    public void patchDelivery(Long idDelivery, DeliveryDTO deliveryDTO) {
+
+        Delivery delivery = getDeliveryById(idDelivery);
+
+        if(Objects.nonNull(deliveryDTO.getDeliveryStatus())) {
+            delivery.setStatus(deliveryDTO.getDeliveryStatus());
+        }
+
+        deliveryRepository.save(delivery);
 
     }
 }

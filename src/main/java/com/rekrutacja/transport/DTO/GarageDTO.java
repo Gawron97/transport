@@ -3,13 +3,16 @@ package com.rekrutacja.transport.DTO;
 import com.rekrutacja.transport.model.Garage;
 import lombok.Builder;
 import lombok.Data;
+import lombok.experimental.SuperBuilder;
 
 @Data
-@Builder
+@SuperBuilder
 public class GarageDTO {
 
-    private Long idGarage;
-    private String name;
+    protected Long idGarage;
+    protected String name;
+
+    public GarageDTO() {}
 
     public static GarageDTO of(Garage garage) {
         return GarageDTO.builder()

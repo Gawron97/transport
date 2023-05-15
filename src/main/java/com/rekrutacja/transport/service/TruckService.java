@@ -17,6 +17,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
 @RequiredArgsConstructor
 public class TruckService {
@@ -27,7 +29,7 @@ public class TruckService {
     public void addOrUpdateTruck(TruckDTO truckDTO) {
 
         Garage garage = garageRepository.findById(truckDTO.getIdGarage()).orElseThrow(() ->
-                new TruckNeedGarageException(TruckError.TRUCK_HAVE_TO_HAS_GARAGE, HttpStatus.BAD_REQUEST));
+                new GarageNotFoundException(GarageError.GARAGE_NOT_FOUND, HttpStatus.NOT_FOUND));
 
         if(truckDTO.getIdTruck() != null) {
             updateTruck(truckDTO, garage);
@@ -70,5 +72,22 @@ public class TruckService {
         });
 
         truckRepository.delete(truck);
+    }
+
+    public void patchTruck(Long idTruck, TruckDTO truckDTO) {
+
+        Truck truck = getTruckById(idTruck);
+
+        if(Objects.nonNull(truckDTO.getStatus())) {
+            truck.setStatus(truckDTO.getStatus());
+        }
+        if(Objects.nonNull(truckDTO.getIdGarage())) {
+            Garage garage = garageRepository.findById(truckDTO.getIdGarage()).orElseThrow(() ->
+                    new GarageNotFoundException(GarageError.GARAGE_NOT_FOUND, HttpStatus.NOT_FOUND));
+            truck.setGarage(garage);
+        }
+
+        truckRepository.save(truck);
+
     }
 }

@@ -1,8 +1,6 @@
 package com.rekrutacja.transport.service;
 
 import com.rekrutacja.transport.DTO.DeliveryDTO;
-import com.rekrutacja.transport.DTO.DriverDTO;
-import com.rekrutacja.transport.DTO.TruckDTO;
 import com.rekrutacja.transport.dao.DeliveryRepository;
 import com.rekrutacja.transport.dao.DriverRepository;
 import com.rekrutacja.transport.dao.TruckRepository;

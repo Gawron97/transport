@@ -1,6 +1,7 @@
 package com.rekrutacja.transport.DTO;
 
 import com.rekrutacja.transport.model.Driver;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 
@@ -13,6 +14,7 @@ public class DriverDTO {
     private String surname;
     private double salary;
     private int age;
+    @NotNull
     private Long idGarage;
 
     public static DriverDTO of(Driver driver) {

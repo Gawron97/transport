@@ -2,6 +2,7 @@ package com.rekrutacja.transport.DTO;
 
 import com.rekrutacja.transport.model.Delivery;
 import com.rekrutacja.transport.model.enums.DeliveryStatus;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 
@@ -13,7 +14,9 @@ public class DeliveryDTO {
     private String itemName;
     private double weight;
     private DeliveryStatus deliveryStatus;
+    @NotNull
     private Long idTruck;
+    @NotNull
     private Long idDriver;
 
     public static DeliveryDTO of(Delivery delivery) {

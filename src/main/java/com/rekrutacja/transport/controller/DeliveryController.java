@@ -2,6 +2,7 @@ package com.rekrutacja.transport.controller;
 
 import com.rekrutacja.transport.DTO.DeliveryDTO;
 import com.rekrutacja.transport.service.DeliveryService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +15,7 @@ public class DeliveryController {
     private final DeliveryService deliveryService;
 
     @PostMapping
-    public void addOrUpdateDelivery(@RequestBody DeliveryDTO deliveryDTO) {
+    public void addOrUpdateDelivery(@RequestBody @Valid DeliveryDTO deliveryDTO) {
         deliveryService.addOrUpdateDelivery(deliveryDTO);
     }
 

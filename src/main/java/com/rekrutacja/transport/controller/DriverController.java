@@ -2,6 +2,7 @@ package com.rekrutacja.transport.controller;
 
 import com.rekrutacja.transport.DTO.DriverDTO;
 import com.rekrutacja.transport.service.DriverService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,7 @@ public class DriverController {
     private final DriverService driverService;
 
     @PostMapping
-    public void addOrUpdateDriver(@RequestBody DriverDTO driverDTO) {
+    public void addOrUpdateDriver(@RequestBody @Valid DriverDTO driverDTO) {
         driverService.addOrUpdateDriver(driverDTO);
     }
 

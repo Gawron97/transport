@@ -5,7 +5,6 @@ import com.rekrutacja.transport.service.TruckService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,13 +17,13 @@ public class TruckController {
     private final TruckService truckService;
 
     @PostMapping()
-    public void addTruck(@RequestBody @Valid TruckDTO truckDTO) {
+    public void addOrUpdateTruck(@RequestBody @Valid TruckDTO truckDTO) {
         truckService.addOrUpdateTruck(truckDTO);
     }
 
     @GetMapping("/{idTruck}")
     public ResponseEntity<TruckDTO> getTruck(@PathVariable Long idTruck) {
-        return truckService.getTruckById(idTruck);
+        return truckService.getTruck(idTruck);
     }
 
     @DeleteMapping("/{idTruck}")

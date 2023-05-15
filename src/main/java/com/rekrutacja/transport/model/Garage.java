@@ -1,5 +1,6 @@
 package com.rekrutacja.transport.model;
 
+import com.rekrutacja.transport.DTO.GarageDTO;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -31,5 +32,11 @@ public class Garage {
     public Garage() {
         trucks = new ArrayList<>();
         drivers = new ArrayList<>();
+    }
+
+    public static Garage of(GarageDTO garageDTO) {
+        Garage garage = new Garage();
+        garage.setName(garage.getName());
+        return garage;
     }
 }

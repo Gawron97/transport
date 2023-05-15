@@ -4,21 +4,17 @@ package com.rekrutacja.transport.service;
 import com.rekrutacja.transport.DTO.TruckDTO;
 import com.rekrutacja.transport.dao.GarageRepository;
 import com.rekrutacja.transport.dao.TruckRepository;
-import com.rekrutacja.transport.model.Delivery;
 import com.rekrutacja.transport.model.Garage;
 import com.rekrutacja.transport.model.Truck;
 import com.rekrutacja.transport.utils.garage.exceptions.GarageError;
 import com.rekrutacja.transport.utils.garage.exceptions.GarageNotFoundException;
 import com.rekrutacja.transport.utils.trucks.exceptions.TruckError;
-import com.rekrutacja.transport.utils.trucks.exceptions.TruckNeedGarageException;
 import com.rekrutacja.transport.utils.trucks.exceptions.TruckNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -47,25 +43,25 @@ public class TruckService {
 
     private void updateTruck(TruckDTO truckDTO, Garage garage) {
 
-        Truck truck = getTruck(truckDTO.getIdTruck());
+        Truck truck = getTruckById(truckDTO.getIdTruck());
         truck.setGarage(garage);
         truckRepository.save(truck);
 
     }
 
-    private Truck getTruck(Long idTruck) {
+    private Truck getTruckById(Long idTruck) {
         return truckRepository.findById(idTruck).orElseThrow(() ->
                 new TruckNotFoundException(TruckError.TRUCK_NOT_FOUND, HttpStatus.NOT_FOUND));
     }
 
-    public ResponseEntity<TruckDTO> getTruckById(Long idTruck) {
-        Truck truck = getTruck(idTruck);
+    public ResponseEntity<TruckDTO> getTruck(Long idTruck) {
+        Truck truck = getTruckById(idTruck);
         return ResponseEntity.ok(TruckDTO.of(truck));
     }
 
     @Transactional
     public void deleteTruck(Long idTruck) {
-        Truck truck = getTruck(idTruck);
+        Truck truck = getTruckById(idTruck);
         truck.getDeliveries().forEach(delivery -> {
             if(truck.equals(delivery.getTruck())) {
                 delivery.setTruck(null);

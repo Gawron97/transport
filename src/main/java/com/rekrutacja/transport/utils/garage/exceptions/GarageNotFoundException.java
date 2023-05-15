@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 public class GarageNotFoundException extends RuntimeException {
 
-    private GarageError truckError;
+    private GarageError garageError;
     private HttpStatus status;
 
 }

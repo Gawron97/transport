@@ -9,6 +9,7 @@ import com.rekrutacja.transport.model.Truck;
 import com.rekrutacja.transport.utils.garage.exceptions.GarageError;
 import com.rekrutacja.transport.utils.garage.exceptions.GarageNotFoundException;
 import com.rekrutacja.transport.utils.trucks.exceptions.TruckError;
+import com.rekrutacja.transport.utils.trucks.exceptions.TruckNeedGarageException;
 import com.rekrutacja.transport.utils.trucks.exceptions.TruckNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +27,7 @@ public class TruckService {
     public void addOrUpdateTruck(TruckDTO truckDTO) {
 
         Garage garage = garageRepository.findById(truckDTO.getIdGarage()).orElseThrow(() ->
-                new GarageNotFoundException(GarageError.GARAGE_NOT_FOUND, HttpStatus.NOT_FOUND));
+                new TruckNeedGarageException(TruckError.TRUCK_HAVE_TO_HAS_GARAGE, HttpStatus.BAD_REQUEST));
 
         if(truckDTO.getIdTruck() != null) {
             updateTruck(truckDTO, garage);

@@ -1,5 +1,6 @@
 package com.rekrutacja.transport.model;
 
+import com.rekrutacja.transport.DTO.DriverDTO;
 import com.rekrutacja.transport.model.enums.Status;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -31,5 +32,14 @@ public class Driver {
 
     @Enumerated(value = EnumType.STRING)
     private Status status;
+
+    public static Driver of(DriverDTO driverDTO) {
+        Driver driver = new Driver();
+        driver.setName(driverDTO.getName());
+        driver.setSurname(driverDTO.getSurname());
+        driver.setSalary(driverDTO.getSalary());
+        driver.setAge(driverDTO.getAge());
+        return driver;
+    }
 
 }

@@ -10,6 +10,10 @@ import com.rekrutacja.transport.model.Truck;
 import com.rekrutacja.transport.model.enums.DeliveryStatus;
 import com.rekrutacja.transport.model.enums.Status;
 import com.rekrutacja.transport.utils.delivery.exceptions.*;
+import com.rekrutacja.transport.utils.driver.exceptions.DriverError;
+import com.rekrutacja.transport.utils.driver.exceptions.DriverNotFoundException;
+import com.rekrutacja.transport.utils.trucks.exceptions.TruckError;
+import com.rekrutacja.transport.utils.trucks.exceptions.TruckNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -88,6 +92,14 @@ public class DeliveryService {
 
         if(Objects.nonNull(deliveryDTO.getDeliveryStatus())) {
             delivery.setStatus(deliveryDTO.getDeliveryStatus());
+            if(DeliveryStatus.DELIVERED.equals(deliveryDTO.getDeliveryStatus())) {
+                Truck truck = truckRepository.findById(deliveryDTO.getIdTruck()).orElseThrow(() ->
+                        new TruckNotFoundException(TruckError.TRUCK_NOT_FOUND, HttpStatus.NOT_FOUND));
+                Driver driver = driverRepository.findById(deliveryDTO.getIdDriver()).orElseThrow(() ->
+                        new DriverNotFoundException(DriverError.DRIVER_NOT_FOUND, HttpStatus.NOT_FOUND));
+                truck.setStatus(Status.AVAILABLE);
+                driver.setStatus(Status.AVAILABLE);
+            }
         }
 
         deliveryRepository.save(delivery);

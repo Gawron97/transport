@@ -25,7 +25,7 @@ public class DeliveryController {
     }
 
     @PatchMapping("/{idDelivery}")
-    public void patchDelivery(@PathVariable Long idDelivery, @RequestBody DeliveryDTO deliveryDTO) {
+    public void patchDelivery(@PathVariable Long idDelivery, @RequestBody @Valid DeliveryDTO deliveryDTO) {
         deliveryService.patchDelivery(idDelivery, deliveryDTO);
     }
 

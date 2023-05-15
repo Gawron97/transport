@@ -24,7 +24,7 @@ public class DriverController {
         return driverService.getDriver(idDriver);
     }
 
-    @DeleteMapping
+    @DeleteMapping(value = "/{idDriver}")
     public void deleteDriver(@PathVariable Long idDriver) {
         driverService.deleteDriver(idDriver);
     }

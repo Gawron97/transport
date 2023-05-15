@@ -17,6 +17,7 @@ public class DriverDTO {
 
     public static DriverDTO of(Driver driver) {
         return DriverDTO.builder()
+                .idDriver(driver.getIdDriver())
                 .name(driver.getName())
                 .surname(driver.getSurname())
                 .salary(driver.getSalary())

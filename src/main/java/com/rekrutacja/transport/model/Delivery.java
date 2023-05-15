@@ -1,5 +1,6 @@
 package com.rekrutacja.transport.model;
 
+import com.rekrutacja.transport.DTO.DeliveryDTO;
 import com.rekrutacja.transport.model.enums.DeliveryStatus;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -30,5 +31,13 @@ public class Delivery {
 
     @Enumerated(value = EnumType.STRING)
     private DeliveryStatus status;
+
+    public static Delivery of(DeliveryDTO deliveryDTO) {
+        Delivery delivery = new Delivery();
+        delivery.setItemName(deliveryDTO.getItemName());
+        delivery.setWeight(deliveryDTO.getWeight());
+        delivery.setStatus(deliveryDTO.getDeliveryStatus());
+        return delivery;
+    }
 
 }

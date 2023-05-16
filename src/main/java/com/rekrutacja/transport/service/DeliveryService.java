@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -72,6 +73,10 @@ public class DeliveryService {
     public ResponseEntity<DeliveryDTO> getDelivery(Long idDelivery) {
         Delivery delivery = getDeliveryById(idDelivery);
         return ResponseEntity.ok(DeliveryDTO.of(delivery));
+    }
+
+    public List<DeliveryDTO> getAllDeliveries() {
+        return deliveryRepository.findAll().stream().map(delivery -> DeliveryDTO.of(delivery)).toList();
     }
 
     public void deleteDelivery(Long idDelivery) {

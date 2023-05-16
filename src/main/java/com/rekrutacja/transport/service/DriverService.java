@@ -6,15 +6,18 @@ import com.rekrutacja.transport.dao.GarageRepository;
 import com.rekrutacja.transport.model.Driver;
 import com.rekrutacja.transport.model.Garage;
 import com.rekrutacja.transport.utils.driver.exceptions.DriverError;
-import com.rekrutacja.transport.utils.driver.exceptions.DriverNeedGarageException;
 import com.rekrutacja.transport.utils.driver.exceptions.DriverNotFoundException;
 import com.rekrutacja.transport.utils.garage.exceptions.GarageError;
 import com.rekrutacja.transport.utils.garage.exceptions.GarageNotFoundException;
+import com.rekrutacja.transport.utils.generalExceptions.GeneralError;
+import com.rekrutacja.transport.utils.generalExceptions.RecordWithThisKeyAlreadyExistsException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -24,32 +27,19 @@ public class DriverService {
     private final DriverRepository driverRepository;
     private final GarageRepository garageRepository;
 
-    public void addOrUpdateDriver(DriverDTO driverDTO) {
+    public void addDriver(DriverDTO driverDTO) {
 
         Garage garage = garageRepository.findById(driverDTO.getIdGarage()).orElseThrow(() ->
                 new GarageNotFoundException(GarageError.GARAGE_NOT_FOUND, HttpStatus.NOT_FOUND));
 
         if(driverDTO.getIdDriver() != null) {
-            updateDriver(driverDTO, garage);
+            throw new RecordWithThisKeyAlreadyExistsException(GeneralError.RECORD_WITH_THIS_KEY_ALREADY_EXISTS,
+                    HttpStatus.CONFLICT);
         } else {
-            addDriver(driverDTO, garage);
+            Driver driver = Driver.of(driverDTO);
+            driver.setGarage(garage);
+            driverRepository.save(driver);
         }
-
-    }
-
-    private void addDriver(DriverDTO driverDTO, Garage garage) {
-
-        Driver driver = Driver.of(driverDTO);
-        driver.setGarage(garage);
-        driverRepository.save(driver);
-
-    }
-
-    private void updateDriver(DriverDTO driverDTO, Garage garage) {
-
-        Driver driver = getDriverById(driverDTO.getIdDriver());
-        driver.setGarage(garage);
-        driverRepository.save(driver);
 
     }
 
@@ -65,6 +55,7 @@ public class DriverService {
 
     }
 
+    @Transactional
     public void deleteDriver(Long idDriver) {
 
         Driver driver = getDriverById(idDriver);
@@ -86,7 +77,12 @@ public class DriverService {
         if(Objects.nonNull(driverDTO.getAge())) {
             driver.setAge(driverDTO.getAge());
         }
-
+        if(Objects.nonNull(driverDTO.getName())) {
+            driver.setName(driverDTO.getName());
+        }
+        if(Objects.nonNull(driverDTO.getSurname())) {
+            driver.setSurname(driverDTO.getSurname());
+        }
         if(Objects.nonNull(driverDTO.getIdGarage())) {
             Garage garage = garageRepository.findById(driverDTO.getIdGarage()).orElseThrow(() ->
                     new GarageNotFoundException(GarageError.GARAGE_NOT_FOUND, HttpStatus.NOT_FOUND));
@@ -95,5 +91,9 @@ public class DriverService {
 
         driverRepository.save(driver);
 
+    }
+
+    public List<DriverDTO> getAllDrivers() {
+        return driverRepository.findAll().stream().map(driver -> DriverDTO.of(driver)).toList();
     }
 }

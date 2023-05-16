@@ -8,8 +8,9 @@ import com.rekrutacja.transport.model.Garage;
 import com.rekrutacja.transport.model.Truck;
 import com.rekrutacja.transport.utils.garage.exceptions.GarageError;
 import com.rekrutacja.transport.utils.garage.exceptions.GarageNotFoundException;
+import com.rekrutacja.transport.utils.generalExceptions.GeneralError;
+import com.rekrutacja.transport.utils.generalExceptions.RecordWithThisKeyAlreadyExistsException;
 import com.rekrutacja.transport.utils.trucks.exceptions.TruckError;
-import com.rekrutacja.transport.utils.trucks.exceptions.TruckNeedGarageException;
 import com.rekrutacja.transport.utils.trucks.exceptions.TruckNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -26,30 +28,19 @@ public class TruckService {
     private final TruckRepository truckRepository;
     private final GarageRepository garageRepository;
 
-    public void addOrUpdateTruck(TruckDTO truckDTO) {
+    public void addTruck(TruckDTO truckDTO) {
 
         Garage garage = garageRepository.findById(truckDTO.getIdGarage()).orElseThrow(() ->
                 new GarageNotFoundException(GarageError.GARAGE_NOT_FOUND, HttpStatus.NOT_FOUND));
 
         if(truckDTO.getIdTruck() != null) {
-            updateTruck(truckDTO, garage);
+            throw new RecordWithThisKeyAlreadyExistsException(GeneralError.RECORD_WITH_THIS_KEY_ALREADY_EXISTS,
+                    HttpStatus.CONFLICT);
         } else {
-            addTruck(truckDTO, garage);
+            Truck truck = Truck.of(truckDTO);
+            truck.setGarage(garage);
+            truckRepository.save(truck);
         }
-    }
-
-    private void addTruck(TruckDTO truckDTO, Garage garage) {
-        Truck truck = Truck.of(truckDTO);
-        truck.setGarage(garage);
-        truckRepository.save(truck);
-    }
-
-    private void updateTruck(TruckDTO truckDTO, Garage garage) {
-
-        Truck truck = getTruckById(truckDTO.getIdTruck());
-        truck.setGarage(garage);
-        truckRepository.save(truck);
-
     }
 
     private Truck getTruckById(Long idTruck) {
@@ -60,6 +51,10 @@ public class TruckService {
     public ResponseEntity<TruckDTO> getTruck(Long idTruck) {
         Truck truck = getTruckById(idTruck);
         return ResponseEntity.ok(TruckDTO.of(truck));
+    }
+
+    public List<TruckDTO> getAllTrucks() {
+        return truckRepository.findAll().stream().map(truck -> TruckDTO.of(truck)).toList();
     }
 
     @Transactional

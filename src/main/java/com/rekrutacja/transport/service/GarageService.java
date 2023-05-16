@@ -8,11 +8,12 @@ import com.rekrutacja.transport.utils.garage.exceptions.CannotDeleteGarageWithDr
 import com.rekrutacja.transport.utils.garage.exceptions.CannotDeleteGarageWithTrucksException;
 import com.rekrutacja.transport.utils.garage.exceptions.GarageError;
 import com.rekrutacja.transport.utils.garage.exceptions.GarageNotFoundException;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -20,23 +21,11 @@ public class GarageService {
 
     private final GarageRepository garageRepository;
 
-    public void addOrUpdateGarage(GarageDTO garageDTO) {
-        if(garageDTO.getIdGarage() != null) {
-            updateGarage(garageDTO);
-        } else {
-            addGarage(garageDTO);
-        }
-    }
-
-    private void addGarage(GarageDTO garageDTO) {
+    public void addGarage(GarageDTO garageDTO) {
         Garage garage = Garage.of(garageDTO);
         garageRepository.save(garage);
     }
 
-    private void updateGarage(GarageDTO garageDTO) {
-        Garage garage = getGarageById(garageDTO.getIdGarage());
-        garageRepository.save(garage);
-    }
 
     private Garage getGarageById(Long idGarage) {
         return garageRepository.findById(idGarage).orElseThrow(() ->
@@ -48,6 +37,21 @@ public class GarageService {
         Garage garage = getGarageById(idGarage);
         return ResponseEntity.ok(GarageDTO.of(garage));
 
+    }
+
+    public ResponseEntity<GarageWithAssociationsDTO> getGarageWithAssociations(Long idGarage) {
+
+        Garage garage = getGarageById(idGarage);
+        return ResponseEntity.ok(GarageWithAssociationsDTO.of(garage));
+
+    }
+
+    public List<GarageDTO> getAllGarages() {
+        return garageRepository.findAll().stream().map(garage -> GarageDTO.of(garage)).toList();
+    }
+
+    public List<GarageWithAssociationsDTO> getAllGaragesWithAssociations() {
+        return garageRepository.findAll().stream().map(garage -> GarageWithAssociationsDTO.of(garage)).toList();
     }
 
     public void deleteGarage(Long idGarage) {
@@ -62,13 +66,6 @@ public class GarageService {
         }
 
         garageRepository.delete(garage);
-
-    }
-
-    public ResponseEntity<GarageWithAssociationsDTO> getGarageWithTrucks(Long idGarage) {
-
-        Garage garage = getGarageById(idGarage);
-        return ResponseEntity.ok(GarageWithAssociationsDTO.of(garage));
 
     }
 }

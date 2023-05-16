@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "api/garages")
@@ -15,8 +17,8 @@ public class GarageController {
     private final GarageService garageService;
 
     @PostMapping
-    public void addOrUpdateGarage(@RequestBody GarageDTO garageDTO) {
-        garageService.addOrUpdateGarage(garageDTO);
+    public void addGarage(@RequestBody GarageDTO garageDTO) {
+        garageService.addGarage(garageDTO);
     }
 
     @GetMapping("/{idGarage}")
@@ -24,9 +26,19 @@ public class GarageController {
         return garageService.getGarage(idGarage);
     }
 
+    @GetMapping
+    public List<GarageDTO> getAllGarages() {
+        return garageService.getAllGarages();
+    }
+
+    @GetMapping("/with_details")
+    public List<GarageWithAssociationsDTO> getAllGarageWithAssociations() {
+        return garageService.getAllGaragesWithAssociations();
+    }
+
     @GetMapping("with_details/{idGarage}")
-    public ResponseEntity<GarageWithAssociationsDTO> getGarageWithTrucks(@PathVariable Long idGarage) {
-        return garageService.getGarageWithTrucks(idGarage);
+    public ResponseEntity<GarageWithAssociationsDTO> getGarageWithAssociations(@PathVariable Long idGarage) {
+        return garageService.getGarageWithAssociations(idGarage);
     }
 
     @DeleteMapping("/{idGarage}")

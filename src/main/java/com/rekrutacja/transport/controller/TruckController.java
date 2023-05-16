@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "api/trucks")
@@ -15,13 +17,18 @@ public class TruckController {
     private final TruckService truckService;
 
     @PostMapping
-    public void addOrUpdateTruck(@RequestBody @Valid TruckDTO truckDTO) {
-        truckService.addOrUpdateTruck(truckDTO);
+    public void addTruck(@RequestBody @Valid TruckDTO truckDTO) {
+        truckService.addTruck(truckDTO);
     }
 
     @GetMapping("/{idTruck}")
     public ResponseEntity<TruckDTO> getTruck(@PathVariable Long idTruck) {
         return truckService.getTruck(idTruck);
+    }
+
+    @GetMapping
+    public List<TruckDTO> getAllTrucks() {
+        return truckService.getAllTrucks();
     }
 
     @PatchMapping("/{idTruck}")

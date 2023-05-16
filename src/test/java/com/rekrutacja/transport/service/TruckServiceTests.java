@@ -5,14 +5,11 @@ import com.rekrutacja.transport.dao.GarageRepository;
 import com.rekrutacja.transport.dao.TruckRepository;
 import com.rekrutacja.transport.model.Garage;
 import com.rekrutacja.transport.model.Truck;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
-import java.util.List;
 import java.util.Optional;
 
 class TruckServiceTests {
@@ -48,7 +45,7 @@ class TruckServiceTests {
                 .build();
 
         Mockito.when(garageRepository.findById(1L)).thenReturn(Optional.of(garage));
-        truckService.addOrUpdateTruck(truckDTO);
+        truckService.addTruck(truckDTO);
 
 
         //Then

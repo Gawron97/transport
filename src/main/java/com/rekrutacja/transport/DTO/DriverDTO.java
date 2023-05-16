@@ -8,14 +8,14 @@ import lombok.Data;
 import lombok.experimental.SuperBuilder;
 
 @Data
-@SuperBuilder
+@Builder
 public class DriverDTO {
 
     private Long idDriver;
     private String name;
     private String surname;
-    private double salary;
-    private int age;
+    private Double salary;
+    private Integer age;
     private Status status;
     @NotNull
     private Long idGarage;

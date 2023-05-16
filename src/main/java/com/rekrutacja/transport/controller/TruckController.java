@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "api/trucks")
 public class TruckController {
 
-    //TODO ogolny todo -> zrobic walidacje tych encji przy dodawaniu np
-
     private final TruckService truckService;
 
     @PostMapping

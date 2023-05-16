@@ -78,9 +78,6 @@ public class TruckService {
 
         Truck truck = getTruckById(idTruck);
 
-        if(Objects.nonNull(truckDTO.getStatus())) {
-            truck.setStatus(truckDTO.getStatus());
-        }
         if(Objects.nonNull(truckDTO.getIdGarage())) {
             Garage garage = garageRepository.findById(truckDTO.getIdGarage()).orElseThrow(() ->
                     new GarageNotFoundException(GarageError.GARAGE_NOT_FOUND, HttpStatus.NOT_FOUND));

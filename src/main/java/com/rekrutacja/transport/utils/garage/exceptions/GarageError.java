@@ -9,7 +9,7 @@ public enum GarageError {
     CANNOT_DELETE_GARAGE_WITH_TRUCKS_INSIDE("Cannot delete garage with trucks inside, you need to first move these trucks"),
     CANNOT_DELETE_GARAGE_WITH_DRIVERS_INSIDE("Cannot delete garage with drivers inside, you need to first move these drivers");
 
-    private String message;
+    private final String message;
 
     GarageError(String message) {
         this.message = message;

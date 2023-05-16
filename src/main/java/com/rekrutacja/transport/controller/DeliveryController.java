@@ -15,8 +15,8 @@ public class DeliveryController {
     private final DeliveryService deliveryService;
 
     @PostMapping
-    public void addOrUpdateDelivery(@RequestBody @Valid DeliveryDTO deliveryDTO) {
-        deliveryService.addOrUpdateDelivery(deliveryDTO);
+    public void addDelivery(@RequestBody @Valid DeliveryDTO deliveryDTO) {
+        deliveryService.addDelivery(deliveryDTO);
     }
 
     @GetMapping("/{idDelivery}")
@@ -25,7 +25,7 @@ public class DeliveryController {
     }
 
     @PatchMapping("/{idDelivery}")
-    public void patchDelivery(@PathVariable Long idDelivery, @RequestBody @Valid DeliveryDTO deliveryDTO) {
+    public void patchDelivery(@PathVariable Long idDelivery, @RequestBody DeliveryDTO deliveryDTO) {
         deliveryService.patchDelivery(idDelivery, deliveryDTO);
     }
 

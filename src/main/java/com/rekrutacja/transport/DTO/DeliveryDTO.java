@@ -12,7 +12,7 @@ public class DeliveryDTO {
 
     private Long idDelivery;
     private String itemName;
-    private double weight;
+    private Double weight;
     private DeliveryStatus deliveryStatus;
     @NotNull
     private Long idTruck;

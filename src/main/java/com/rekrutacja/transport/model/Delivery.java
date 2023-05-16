@@ -15,7 +15,7 @@ public class Delivery {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idDelivery;
     private String itemName;
-    private double weight;
+    private Double weight;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idDriver")

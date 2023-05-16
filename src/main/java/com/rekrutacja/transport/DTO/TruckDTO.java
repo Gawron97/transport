@@ -16,7 +16,7 @@ public class TruckDTO {
     private Long idTruck;
     private String brand;
     private String model;
-    private double capacity;
+    private Double capacity;
     private Status status;
     @NotNull
     private Long idGarage;

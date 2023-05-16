@@ -19,7 +19,7 @@ public class Truck {
     private Long idTruck;
     private String brand;
     private String model;
-    private double capacity;
+    private Double capacity;
 
     @ManyToOne(fetch = FetchType.EAGER) // do przemyslenia LAZY, razem z przylaczeniem trucka do przesylki wejdzie garage
     @JoinColumn(name = "idGarage")

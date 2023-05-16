@@ -83,9 +83,10 @@ public class DriverService {
         if(Objects.nonNull(driverDTO.getSalary())) {
             driver.setSalary(driverDTO.getSalary());
         }
-        if(Objects.nonNull(driverDTO.getStatus())) {
-            driver.setStatus(driverDTO.getStatus());
+        if(Objects.nonNull(driverDTO.getAge())) {
+            driver.setAge(driverDTO.getAge());
         }
+
         if(Objects.nonNull(driverDTO.getIdGarage())) {
             Garage garage = garageRepository.findById(driverDTO.getIdGarage()).orElseThrow(() ->
                     new GarageNotFoundException(GarageError.GARAGE_NOT_FOUND, HttpStatus.NOT_FOUND));

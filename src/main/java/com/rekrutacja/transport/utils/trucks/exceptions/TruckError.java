@@ -10,7 +10,7 @@ public enum TruckError {
     TRUCK_NOT_FOUND("Truck not found"),
     TRUCK_HAVE_TO_HAS_GARAGE("Truck have to has garage");
 
-    private String message;
+    private final String message;
 
     TruckError(String message) {
         this.message = message;

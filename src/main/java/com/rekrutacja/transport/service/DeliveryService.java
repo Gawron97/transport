@@ -10,10 +10,8 @@ import com.rekrutacja.transport.model.Truck;
 import com.rekrutacja.transport.model.enums.DeliveryStatus;
 import com.rekrutacja.transport.model.enums.Status;
 import com.rekrutacja.transport.utils.delivery.exceptions.*;
-import com.rekrutacja.transport.utils.driver.exceptions.DriverError;
-import com.rekrutacja.transport.utils.driver.exceptions.DriverNotFoundException;
-import com.rekrutacja.transport.utils.trucks.exceptions.TruckError;
-import com.rekrutacja.transport.utils.trucks.exceptions.TruckNotFoundException;
+import com.rekrutacja.transport.utils.generalExceptions.GeneralError;
+import com.rekrutacja.transport.utils.generalExceptions.RecordWithThisKeyAlreadyExistsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +27,12 @@ public class DeliveryService {
     private final TruckRepository truckRepository;
     private final DriverRepository driverRepository;
 
-    public void addOrUpdateDelivery(DeliveryDTO deliveryDTO) {
+    public void addDelivery(DeliveryDTO deliveryDTO) {
+
+        if(deliveryDTO.getIdDelivery() != null) {
+            throw new RecordWithThisKeyAlreadyExistsException(GeneralError.RECORD_WITH_THIS_KEY_ALREADY_EXISTS,
+                    HttpStatus.CONFLICT);
+        }
 
         Truck truck = truckRepository.findById(deliveryDTO.getIdTruck()).orElseThrow(() ->
                 new DeliveryNeedTruckException(DeliveryError.DELIVERY_NEED_TRUCK, HttpStatus.BAD_REQUEST));
@@ -38,19 +41,11 @@ public class DeliveryService {
 
         validate(deliveryDTO, driver, truck);
 
-        Delivery delivery;
-
-        if(deliveryDTO.getIdDelivery() != null) {
-            delivery = getDeliveryById(deliveryDTO.getIdDelivery());
-        } else {
-            delivery = Delivery.of(deliveryDTO);
-            delivery.setStatus(DeliveryStatus.ON_THE_WAY);
-        }
+        Delivery delivery = Delivery.of(deliveryDTO);
 
         delivery.setDriver(driver);
         delivery.setTruck(truck);
-        driver.setStatus(Status.NOT_AVAILABLE);
-        truck.setStatus(Status.NOT_AVAILABLE);
+        setTruckAndDriverStatus(delivery);
         deliveryRepository.save(delivery);
 
     }
@@ -86,20 +81,25 @@ public class DeliveryService {
 
     }
 
+    private void setTruckAndDriverStatus(Delivery delivery) {
+
+        if(DeliveryStatus.DELIVERED.equals(delivery.getStatus())) {
+            delivery.getTruck().setStatus(Status.AVAILABLE);
+            delivery.getDriver().setStatus(Status.AVAILABLE);
+        } else {
+            delivery.getTruck().setStatus(Status.NOT_AVAILABLE);
+            delivery.getDriver().setStatus(Status.NOT_AVAILABLE);
+        }
+
+    }
+
     public void patchDelivery(Long idDelivery, DeliveryDTO deliveryDTO) {
 
         Delivery delivery = getDeliveryById(idDelivery);
 
         if(Objects.nonNull(deliveryDTO.getDeliveryStatus())) {
             delivery.setStatus(deliveryDTO.getDeliveryStatus());
-            if(DeliveryStatus.DELIVERED.equals(deliveryDTO.getDeliveryStatus())) {
-                Truck truck = truckRepository.findById(deliveryDTO.getIdTruck()).orElseThrow(() ->
-                        new TruckNotFoundException(TruckError.TRUCK_NOT_FOUND, HttpStatus.NOT_FOUND));
-                Driver driver = driverRepository.findById(deliveryDTO.getIdDriver()).orElseThrow(() ->
-                        new DriverNotFoundException(DriverError.DRIVER_NOT_FOUND, HttpStatus.NOT_FOUND));
-                truck.setStatus(Status.AVAILABLE);
-                driver.setStatus(Status.AVAILABLE);
-            }
+            setTruckAndDriverStatus(delivery);
         }
 
         deliveryRepository.save(delivery);

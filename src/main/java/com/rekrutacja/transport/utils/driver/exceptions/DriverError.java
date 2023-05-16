@@ -8,7 +8,7 @@ public enum DriverError {
     DRIVER_NOT_FOUND("Driver not found"),
     DRIVER_HAVE_TO_HAS_GARAGE("Driver have to has garage");
 
-    private String message;
+    private final String message;
 
     DriverError(String message) {
         this.message = message;

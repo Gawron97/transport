@@ -18,8 +18,8 @@ public class Driver {
     private Long idDriver;
     private String name;
     private String surname;
-    private double salary;
-    private int age;
+    private Double salary;
+    private Integer age;
 
     @Enumerated(value = EnumType.STRING)
     private Status status;

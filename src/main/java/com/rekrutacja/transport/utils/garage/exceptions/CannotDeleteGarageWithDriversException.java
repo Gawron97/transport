@@ -5,11 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
-@AllArgsConstructor
-@Getter
-public class CannotDeleteGarageWithDriversException extends RuntimeException {
+public class CannotDeleteGarageWithDriversException extends GarageException {
 
-    private GarageError garageError;
-    private HttpStatus status;
+    public CannotDeleteGarageWithDriversException(GarageError garageError, HttpStatus status) {
+        super(garageError, status);
+    }
 
 }

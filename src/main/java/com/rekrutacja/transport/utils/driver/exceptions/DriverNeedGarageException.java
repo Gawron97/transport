@@ -5,11 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
-@Getter
-@AllArgsConstructor
-public class DriverNeedGarageException extends RuntimeException{
 
-    private DriverError driverError;
-    private HttpStatus status;
+public class DriverNeedGarageException extends DriverException {
+
+    public DriverNeedGarageException(DriverError driverError, HttpStatus status) {
+        super(driverError, status);
+    }
 
 }

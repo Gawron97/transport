@@ -10,7 +10,7 @@ import com.rekrutacja.transport.utils.driver.exceptions.DriverNotFoundException;
 import com.rekrutacja.transport.utils.garage.exceptions.GarageError;
 import com.rekrutacja.transport.utils.garage.exceptions.GarageNotFoundException;
 import com.rekrutacja.transport.utils.generalExceptions.GeneralError;
-import com.rekrutacja.transport.utils.generalExceptions.RecordWithThisKeyAlreadyExistsException;
+import com.rekrutacja.transport.utils.generalExceptions.CannotAssignKeyToAddingRecordException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -33,7 +33,7 @@ public class DriverService {
                 new GarageNotFoundException(GarageError.GARAGE_NOT_FOUND, HttpStatus.NOT_FOUND));
 
         if(driverDTO.getIdDriver() != null) {
-            throw new RecordWithThisKeyAlreadyExistsException(GeneralError.RECORD_WITH_THIS_KEY_ALREADY_EXISTS,
+            throw new CannotAssignKeyToAddingRecordException(GeneralError.CANNOT_ASSIGN_KEY_TO_ADDING_RECORD_EXCEPTION,
                     HttpStatus.CONFLICT);
         } else {
             Driver driver = Driver.of(driverDTO);

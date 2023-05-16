@@ -14,27 +14,22 @@ public class DeliveryExceptionAdvice {
     }
 
     @ExceptionHandler(CannotAssignNotAvailableDriverException.class)
-    public ResponseEntity<ErrorInfo> handleDeliveryNotFoundException(CannotAssignNotAvailableDriverException ex) {
+    public ResponseEntity<ErrorInfo> handleAssigningNotAvailableDriverException(CannotAssignNotAvailableDriverException ex) {
         return ResponseEntity.status(ex.getStatus()).body(new ErrorInfo(ex.getDeliveryError().getMessage()));
     }
 
     @ExceptionHandler(CannotAssignNotAvailableTruckException.class)
-    public ResponseEntity<ErrorInfo> handleDeliveryNotFoundException(CannotAssignNotAvailableTruckException ex) {
-        return ResponseEntity.status(ex.getStatus()).body(new ErrorInfo(ex.getDeliveryError().getMessage()));
-    }
-
-    @ExceptionHandler(DeliveryNeedDriverException.class)
-    public ResponseEntity<ErrorInfo> handleDeliveryNotFoundException(DeliveryNeedDriverException ex) {
-        return ResponseEntity.status(ex.getStatus()).body(new ErrorInfo(ex.getDeliveryError().getMessage()));
-    }
-
-    @ExceptionHandler(DeliveryNeedTruckException.class)
-    public ResponseEntity<ErrorInfo> handleDeliveryNotFoundException(DeliveryNeedTruckException ex) {
+    public ResponseEntity<ErrorInfo> handleAssigningNotAvailableTruckException(CannotAssignNotAvailableTruckException ex) {
         return ResponseEntity.status(ex.getStatus()).body(new ErrorInfo(ex.getDeliveryError().getMessage()));
     }
 
     @ExceptionHandler(NotEnoughCapacityInTruckException.class)
-    public ResponseEntity<ErrorInfo> handleDeliveryNotFoundException(NotEnoughCapacityInTruckException ex) {
+    public ResponseEntity<ErrorInfo> handleNotEnoughCapacityInTruckException(NotEnoughCapacityInTruckException ex) {
+        return ResponseEntity.status(ex.getStatus()).body(new ErrorInfo(ex.getDeliveryError().getMessage()));
+    }
+
+    @ExceptionHandler(DriverAndTruckNotInSameGaragesException.class)
+    public ResponseEntity<ErrorInfo> handleDriverAndTruckInSameGarageException(DriverAndTruckNotInSameGaragesException ex) {
         return ResponseEntity.status(ex.getStatus()).body(new ErrorInfo(ex.getDeliveryError().getMessage()));
     }
 

@@ -20,14 +20,21 @@ public class DeliveryDTO {
     private Long idDriver;
 
     public static DeliveryDTO of(Delivery delivery) {
-        return DeliveryDTO.builder()
+        DeliveryDTO deliveryDTO = DeliveryDTO.builder()
                 .idDelivery(delivery.getIdDelivery())
                 .itemName(delivery.getItemName())
                 .weight(delivery.getWeight())
                 .deliveryStatus(delivery.getStatus())
-                .idTruck(delivery.getTruck().getIdTruck())
-                .idDriver(delivery.getDriver().getIdDriver())
                 .build();
+
+        if(delivery.getDriver() != null)
+            deliveryDTO.setIdDriver(delivery.getDriver().getIdDriver());
+        if(delivery.getTruck() != null)
+            deliveryDTO.setIdTruck(delivery.getTruck().getIdTruck());
+        // linijki powyzej ze wzgledu na mozliwosc usuniecia trucka/driver z bazy, mysle ze w praktyce raczej zamiast
+        // usuwania ustawilibysmy status 'nieaktywny'
+
+        return deliveryDTO;
     }
 
 }

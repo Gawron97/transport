@@ -4,11 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
-@AllArgsConstructor
-@Getter
-public class CannotAssignNotAvailableTruckException extends RuntimeException {
+public class CannotAssignNotAvailableTruckException extends DeliveryException {
 
-    private DeliveryError deliveryError;
-    private HttpStatus status;
+    public CannotAssignNotAvailableTruckException(DeliveryError deliveryError, HttpStatus status) {
+        super(deliveryError, status);
+    }
 
 }

@@ -4,11 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
-@AllArgsConstructor
-@Getter
-public class DriverNotFoundException extends RuntimeException {
+public class DriverNotFoundException extends DriverException {
 
-    private DriverError driverError;
-    private HttpStatus status;
+    public DriverNotFoundException(DriverError driverError, HttpStatus status) {
+        super(driverError, status);
+    }
 
 }

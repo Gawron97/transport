@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 
 @AllArgsConstructor
 @Getter
-public class RecordWithThisKeyAlreadyExistsException extends RuntimeException {
+public class CannotAssignKeyToAddingRecordException extends RuntimeException {
 
     private GeneralError generalError;
     private HttpStatus status;

@@ -1,8 +1,9 @@
 package com.rekrutacja.transport.utils.generalExceptionHandling;
 
 import com.rekrutacja.transport.utils.generalExceptions.ErrorInfo;
-import com.rekrutacja.transport.utils.generalExceptions.RecordWithThisKeyAlreadyExistsException;
+import com.rekrutacja.transport.utils.generalExceptions.CannotAssignKeyToAddingRecordException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -16,14 +17,19 @@ public class GeneralAdvice {
         return ResponseEntity.status(400).body(new ErrorInfo(ex.getMessage()));
     }
 
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorInfo> handleMessageNotReadable(HttpMessageNotReadableException ex) {
+        return ResponseEntity.status(400).body(new ErrorInfo(ex.getMessage()));
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorInfo> handleNotValidException(MethodArgumentNotValidException ex) {
         return ResponseEntity.status(400).body(new ErrorInfo(ex.getMessage()));
     }
 
-    @ExceptionHandler(RecordWithThisKeyAlreadyExistsException.class)
-    public ResponseEntity<ErrorInfo> handleRecordWithKeyAlreadyExistsException(RecordWithThisKeyAlreadyExistsException ex) {
-        return ResponseEntity.status(400).body(new ErrorInfo(ex.getMessage()));
+    @ExceptionHandler(CannotAssignKeyToAddingRecordException.class)
+    public ResponseEntity<ErrorInfo> handleRecordWithKeyAlreadyExistsException(CannotAssignKeyToAddingRecordException ex) {
+        return ResponseEntity.status(400).body(new ErrorInfo(ex.getGeneralError().getMessage()));
     }
 
 }

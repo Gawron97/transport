@@ -9,7 +9,7 @@ import com.rekrutacja.transport.model.Truck;
 import com.rekrutacja.transport.utils.garage.exceptions.GarageError;
 import com.rekrutacja.transport.utils.garage.exceptions.GarageNotFoundException;
 import com.rekrutacja.transport.utils.generalExceptions.GeneralError;
-import com.rekrutacja.transport.utils.generalExceptions.RecordWithThisKeyAlreadyExistsException;
+import com.rekrutacja.transport.utils.generalExceptions.CannotAssignKeyToAddingRecordException;
 import com.rekrutacja.transport.utils.trucks.exceptions.TruckError;
 import com.rekrutacja.transport.utils.trucks.exceptions.TruckNotFoundException;
 import jakarta.transaction.Transactional;
@@ -34,7 +34,7 @@ public class TruckService {
                 new GarageNotFoundException(GarageError.GARAGE_NOT_FOUND, HttpStatus.NOT_FOUND));
 
         if(truckDTO.getIdTruck() != null) {
-            throw new RecordWithThisKeyAlreadyExistsException(GeneralError.RECORD_WITH_THIS_KEY_ALREADY_EXISTS,
+            throw new CannotAssignKeyToAddingRecordException(GeneralError.CANNOT_ASSIGN_KEY_TO_ADDING_RECORD_EXCEPTION,
                     HttpStatus.CONFLICT);
         } else {
             Truck truck = Truck.of(truckDTO);

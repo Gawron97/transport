@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public enum GeneralError {
 
-    RECORD_WITH_THIS_KEY_ALREADY_EXISTS("Record with following key is already in db");
+    CANNOT_ASSIGN_KEY_TO_ADDING_RECORD_EXCEPTION("Cannot assign id manually to new record");
 
     private final String message;
 

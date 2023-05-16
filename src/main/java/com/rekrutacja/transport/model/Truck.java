@@ -21,7 +21,7 @@ public class Truck {
     private String model;
     private Double capacity;
 
-    @ManyToOne(fetch = FetchType.EAGER) // do przemyslenia LAZY, razem z przylaczeniem trucka do przesylki wejdzie garage
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idGarage")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude

@@ -10,8 +10,12 @@ import com.rekrutacja.transport.model.Truck;
 import com.rekrutacja.transport.model.enums.DeliveryStatus;
 import com.rekrutacja.transport.model.enums.Status;
 import com.rekrutacja.transport.utils.delivery.exceptions.*;
+import com.rekrutacja.transport.utils.driver.exceptions.DriverError;
+import com.rekrutacja.transport.utils.driver.exceptions.DriverNotFoundException;
 import com.rekrutacja.transport.utils.generalExceptions.GeneralError;
-import com.rekrutacja.transport.utils.generalExceptions.RecordWithThisKeyAlreadyExistsException;
+import com.rekrutacja.transport.utils.generalExceptions.CannotAssignKeyToAddingRecordException;
+import com.rekrutacja.transport.utils.trucks.exceptions.TruckError;
+import com.rekrutacja.transport.utils.trucks.exceptions.TruckNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,14 +35,14 @@ public class DeliveryService {
     public void addDelivery(DeliveryDTO deliveryDTO) {
 
         if(deliveryDTO.getIdDelivery() != null) {
-            throw new RecordWithThisKeyAlreadyExistsException(GeneralError.RECORD_WITH_THIS_KEY_ALREADY_EXISTS,
-                    HttpStatus.CONFLICT);
+            throw new CannotAssignKeyToAddingRecordException(GeneralError.CANNOT_ASSIGN_KEY_TO_ADDING_RECORD_EXCEPTION,
+                    HttpStatus.BAD_REQUEST);
         }
 
         Truck truck = truckRepository.findById(deliveryDTO.getIdTruck()).orElseThrow(() ->
-                new DeliveryNeedTruckException(DeliveryError.DELIVERY_NEED_TRUCK, HttpStatus.BAD_REQUEST));
+                new TruckNotFoundException(TruckError.TRUCK_NOT_FOUND, HttpStatus.NOT_FOUND));
         Driver driver = driverRepository.findById(deliveryDTO.getIdDriver()).orElseThrow(() ->
-                new DeliveryNeedDriverException(DeliveryError.DELIVERY_NEED_DRIVER, HttpStatus.BAD_REQUEST));
+                new DriverNotFoundException(DriverError.DRIVER_NOT_FOUND, HttpStatus.NOT_FOUND));
 
         validate(deliveryDTO, driver, truck);
 
@@ -52,6 +56,10 @@ public class DeliveryService {
     }
 
     private void validate(DeliveryDTO deliveryDTO, Driver driver, Truck truck) {
+        if(!Objects.equals(driver.getGarage(), truck.getGarage())) {
+            throw new DriverAndTruckNotInSameGaragesException(DeliveryError.DRIVER_AND_TRUCK_HAVE_TO_BE_IN_THE_SAME_GARAGE,
+                    HttpStatus.BAD_REQUEST);
+        }
         if(Status.NOT_AVAILABLE.equals(driver.getStatus())) {
             throw new CannotAssignNotAvailableDriverException(DeliveryError.CANNOT_ASSIGN_NOT_AVAILABLE_DRIVER,
                     HttpStatus.BAD_REQUEST);

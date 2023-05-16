@@ -6,11 +6,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
-@Getter
-@AllArgsConstructor
-public class GarageNotFoundException extends RuntimeException {
 
-    private GarageError garageError;
-    private HttpStatus status;
+public class GarageNotFoundException extends GarageException {
+
+    public GarageNotFoundException(GarageError garageError, HttpStatus status) {
+        super(garageError, status);
+    }
 
 }

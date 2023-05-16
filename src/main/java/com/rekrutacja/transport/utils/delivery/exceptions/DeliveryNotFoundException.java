@@ -4,11 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
-@AllArgsConstructor
-@Getter
-public class DeliveryNotFoundException extends RuntimeException {
+public class DeliveryNotFoundException extends DeliveryException {
 
-    private DeliveryError deliveryError;
-    private HttpStatus status;
+    public DeliveryNotFoundException(DeliveryError deliveryError, HttpStatus status) {
+        super(deliveryError, status);
+    }
 
 }

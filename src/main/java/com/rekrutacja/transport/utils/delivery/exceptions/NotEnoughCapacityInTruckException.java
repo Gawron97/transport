@@ -5,11 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
-@AllArgsConstructor
-@Getter
-public class NotEnoughCapacityInTruckException extends RuntimeException {
 
-    private DeliveryError deliveryError;
-    private HttpStatus status;
+public class NotEnoughCapacityInTruckException extends DeliveryException {
+
+    public NotEnoughCapacityInTruckException(DeliveryError deliveryError, HttpStatus status) {
+        super(deliveryError, status);
+    }
 
 }

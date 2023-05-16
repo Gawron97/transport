@@ -4,11 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
+import javax.management.relation.RoleInfo;
+
 @AllArgsConstructor
 @Getter
-public class DeliveryNeedTruckException extends RuntimeException {
+public class DeliveryException extends RuntimeException {
 
-    private DeliveryError deliveryError;
-    private HttpStatus status;
+    protected DeliveryError deliveryError;
+    protected HttpStatus status;
 
 }

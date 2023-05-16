@@ -1,14 +1,14 @@
 package com.rekrutacja.transport.utils.trucks.exceptions;
 
+import com.rekrutacja.transport.utils.garage.exceptions.GarageException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
-@Getter
-@AllArgsConstructor
-public class TruckNeedGarageException extends RuntimeException{
+public class TruckNeedGarageException extends TruckException {
 
-    private TruckError truckError;
-    private HttpStatus status;
+    public TruckNeedGarageException(TruckError truckError, HttpStatus status) {
+        super(truckError, status);
+    }
 
 }

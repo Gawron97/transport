@@ -78,6 +78,9 @@ public class TruckService {
                     new GarageNotFoundException(GarageError.GARAGE_NOT_FOUND, HttpStatus.NOT_FOUND));
             truck.setGarage(garage);
         }
+        if(Objects.nonNull(truckDTO.getCapacity())) {
+            truck.setCapacity(truckDTO.getCapacity());
+        }
 
         truckRepository.save(truck);
 

@@ -53,6 +53,7 @@ class TruckServiceTests {
         expectedTruck.setBrand("Scania");
         expectedTruck.setModel("v5");
         expectedTruck.setGarage(garage);
+        garage.getTrucks().add(expectedTruck);
 
         Mockito.verify(truckRepository).save(expectedTruck);
 

@@ -106,6 +106,14 @@ public class DeliveryService {
 
     }
 
+    public void changeDeliveryStatus(Long idDelivery, DeliveryStatus deliveryStatus) {
+        Delivery delivery = getDeliveryById(idDelivery);
+        delivery.setStatus(deliveryStatus);
+        setTruckAndDriverStatus(delivery);
+
+        deliveryRepository.save(delivery);
+    }
+
     public void patchDelivery(Long idDelivery, DeliveryDTO deliveryDTO) {
 
         Delivery delivery = getDeliveryById(idDelivery);

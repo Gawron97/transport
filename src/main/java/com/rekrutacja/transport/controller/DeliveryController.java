@@ -1,6 +1,7 @@
 package com.rekrutacja.transport.controller;
 
 import com.rekrutacja.transport.DTO.DeliveryDTO;
+import com.rekrutacja.transport.model.enums.DeliveryStatus;
 import com.rekrutacja.transport.service.DeliveryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,11 @@ public class DeliveryController {
     @GetMapping
     public List<DeliveryDTO> getAllDeliveries() {
         return deliveryService.getAllDeliveries();
+    }
+
+    @PostMapping("/change_status/{idDelivery}")
+    public void changeDeliveryStatus(@PathVariable Long idDelivery, @RequestParam DeliveryStatus deliveryStatus) {
+        deliveryService.changeDeliveryStatus(idDelivery, deliveryStatus);
     }
 
     @PatchMapping("/{idDelivery}")

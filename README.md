@@ -1,7 +1,8 @@
 # transport
 
 Przemyślenia i obserwacje:
-zad. 1
+
+# zad. 1
 Zrobiłem CRUDa, ale nie umożliwiłem wszystkim encją na wszystkie operacje CRUD. Jeśli chodzi o usuwanie, na pewno nie daje takiej możliwości dla encji Delivery, która po dostarczeniu otrzymuje status DELIVERED.
 Myśle, że w przypadku większych projektów usuwanie niektórych encji doprowadziłoby do wielu konfliktów i zamiast usuwania lepiej ustawić status na np. INACTIVE.
 Dopuszczam na przykład usuwanie encji Truck jak i Driver, co wymusza przejrzenie wszystkich encji Delivered i usunięcia powiązań z usuwaną encja, przez co niektóre przesyłki po usunięciu objektu np. Truck zostają

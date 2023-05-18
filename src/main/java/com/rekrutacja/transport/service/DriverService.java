@@ -71,17 +71,17 @@ public class DriverService {
     public void patchDriver(Long idDriver, DriverDTO driverDTO) {
 
         Driver driver = getDriverById(idDriver);
-        if(Objects.nonNull(driverDTO.getSalary())) {
-            driver.setSalary(driverDTO.getSalary());
-        }
-        if(Objects.nonNull(driverDTO.getAge())) {
-            driver.setAge(driverDTO.getAge());
-        }
         if(Objects.nonNull(driverDTO.getName())) {
             driver.setName(driverDTO.getName());
         }
         if(Objects.nonNull(driverDTO.getSurname())) {
             driver.setSurname(driverDTO.getSurname());
+        }
+        if(Objects.nonNull(driverDTO.getSalary())) {
+            driver.setSalary(driverDTO.getSalary());
+        }
+        if(Objects.nonNull(driverDTO.getAge())) {
+            driver.setAge(driverDTO.getAge());
         }
         if(Objects.nonNull(driverDTO.getIdGarage())) {
             Garage garage = garageRepository.findById(driverDTO.getIdGarage()).orElseThrow(() ->

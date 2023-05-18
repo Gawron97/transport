@@ -60,11 +60,13 @@ public class DeliveryService {
             throw new DriverAndTruckNotInSameGaragesException(DeliveryError.DRIVER_AND_TRUCK_HAVE_TO_BE_IN_THE_SAME_GARAGE,
                     HttpStatus.BAD_REQUEST);
         }
-        if(Status.NOT_AVAILABLE.equals(driver.getStatus())) {
+        if(!DeliveryStatus.DELIVERED.equals(deliveryDTO.getDeliveryStatus()) &&
+                Status.NOT_AVAILABLE.equals(driver.getStatus())) {
             throw new CannotAssignNotAvailableDriverException(DeliveryError.CANNOT_ASSIGN_NOT_AVAILABLE_DRIVER,
                     HttpStatus.BAD_REQUEST);
         }
-        if(Status.NOT_AVAILABLE.equals(truck.getStatus())) {
+        if(!DeliveryStatus.DELIVERED.equals(deliveryDTO.getDeliveryStatus()) &&
+                Status.NOT_AVAILABLE.equals(truck.getStatus())) {
             throw new CannotAssignNotAvailableTruckException(DeliveryError.CANNOT_ASSIGN_NOT_AVAILABLE_TRUCK,
                     HttpStatus.BAD_REQUEST);
         }

@@ -219,7 +219,7 @@ public class DeliveryServiceTests {
     }
 
     @Test
-    public void givenAvailableDriverAndTruckWhenAssignToDeliveryThenTheyUnavailable() {
+    public void givenAvailableDriverAndTruckWhenAssignToDeliveryOnTheWayThenTheyUnavailable() {
 
         //Given
 
@@ -320,6 +320,74 @@ public class DeliveryServiceTests {
 
         assertEquals(deliveryService.getAllDeliveries().size(), deliveryList.size());
         assertEquals(deliveryService.getAllDeliveries(), deliveryList.stream().map(DeliveryDTO::of).toList());
+
+    }
+
+    @Test
+    public void givenAvailableDriverAndTruckWhenAssignToDeliveryDeliveredThenTheyAvailable() {
+
+        //Given
+
+        Garage garage = createBasicGarage();
+
+        Truck truck = createBasicTruck();
+        truck.setGarage(garage);
+
+        Driver driver = createBasicDriver();
+        driver.setGarage(garage);
+
+        //When
+        DeliveryDTO deliveryDTO = DeliveryDTO.builder()
+                .itemName("cars")
+                .weight(10.0)
+                .deliveryStatus(DeliveryStatus.DELIVERED)
+                .idTruck(1L)
+                .idDriver(1L)
+                .build();
+
+        when(truckRepository.findById(1L)).thenReturn(Optional.of(truck));
+        when(driverRepository.findById(1L)).thenReturn(Optional.of(driver));
+
+        deliveryService.addDelivery(deliveryDTO);
+
+        //Then
+        assertEquals(Status.AVAILABLE, truck.getStatus());
+        assertEquals(Status.AVAILABLE, driver.getStatus());
+
+    }
+
+    @Test
+    public void givenUnavailableDriverAndTruckWhenAssignToDeliveryThenTheyUnavailable() {
+
+        //Given
+
+        Garage garage = createBasicGarage();
+
+        Truck truck = createBasicTruck();
+        truck.setStatus(Status.NOT_AVAILABLE);
+        truck.setGarage(garage);
+
+        Driver driver = createBasicDriver();
+        driver.setStatus(Status.NOT_AVAILABLE);
+        driver.setGarage(garage);
+
+        //When
+        DeliveryDTO deliveryDTO = DeliveryDTO.builder()
+                .itemName("cars")
+                .weight(10.0)
+                .deliveryStatus(DeliveryStatus.DELIVERED)
+                .idTruck(1L)
+                .idDriver(1L)
+                .build();
+
+        when(truckRepository.findById(1L)).thenReturn(Optional.of(truck));
+        when(driverRepository.findById(1L)).thenReturn(Optional.of(driver));
+
+        deliveryService.addDelivery(deliveryDTO);
+
+        //Then
+        assertEquals(Status.NOT_AVAILABLE, truck.getStatus());
+        assertEquals(Status.NOT_AVAILABLE, driver.getStatus());
 
     }
 

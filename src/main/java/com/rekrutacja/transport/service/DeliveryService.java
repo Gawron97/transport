@@ -50,7 +50,9 @@ public class DeliveryService {
 
         delivery.setDriver(driver);
         delivery.setTruck(truck);
-        setTruckAndDriverStatus(delivery);
+        if(!DeliveryStatus.DELIVERED.equals(delivery.getStatus())) {
+            setTruckAndDriverStatus(delivery);
+        }
         deliveryRepository.save(delivery);
 
     }

@@ -38,17 +38,17 @@ public class TransportApplication implements CommandLineRunner {
 //		Garage garage = new Garage();
 //		garage.setName("asd");
 //		garageRepository.save(garage);
-//
-//		Truck truck = new Truck();
-//		truck.setModel("cos");
-//		truck.setGarage(garage);
-//		truckRepository.save(truck);
 
 //		truckService.deleteTruck(1L);
 
+//		Garage garage = garageRepository.findById(5L).get();
 //		Truck truck2 = new Truck();
 //		truck2.setModel("ssss");
+//		truck2.setCapacity(5.0);
+//		truck2.setGarage(garage);
 //		truckRepository.save(truck2);
+//
+//		System.out.println(garage.getTrucks());
 //
 //		Delivery delivery = new Delivery();
 //		delivery.setStatus(DeliveryStatus.ON_THE_WAY);

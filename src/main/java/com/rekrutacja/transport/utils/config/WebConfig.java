@@ -13,14 +13,10 @@ import java.io.IOException;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer, Filter {
+
     @Override
     public void addFormatters(FormatterRegistry registry) {
         ApplicationConversionService.configure(registry);
-    }
-
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**").allowedOrigins("http://localhost:4200");
     }
 
     @Override
